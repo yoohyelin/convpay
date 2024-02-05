@@ -54,43 +54,7 @@ public class ConveniencePayService { // 편결이
         return new PayResponse(PayResult.SUCCESS,discountedAmount);
     }
 
-    public class ConveniencePayService_noSpring { // 편결이
-        // 구현체에 의존
-        private final MoneyAdapter moneyAdapter = new MoneyAdapter();
-        private final CardAdapter cardAdapter = new CardAdapter();
-        // 구현체를 결제서비스가 직접 선탤하여 의존
-        // 해결방법: 의존 관계 관리 클래스를 따로 분리
-        private final DiscountInterface discountInterface = new DiscountByPayMethod();
-        // private final DiscountInterface discountInterface = new DiscountConvenience();
-        public PayResponse pay(PayRequest payRequest) {
-            PaymentInterface paymentInterface;
 
-            if(payRequest.getPayMethodType() == PayMethodType.CARD){
-                paymentInterface = cardAdapter;
-            }else {
-                paymentInterface = moneyAdapter;
-            }
-
-            Integer discountedAmount = discountInterface.getDiscountAmount(payRequest);
-            PaymentResult payment = paymentInterface.payment(discountedAmount);
-            // fail fast
-
-            // Method()
-
-
-            // Exception case1
-            // Exception case2
-            // Exception case3
-
-            // Success Case(Only one)
-
-            if(payment == PaymentResult.PAYMENT_FAIL) {
-                return new PayResponse(PayResult.FAIL,0);
-            }
-            // Success Case
-            // 성공케이스는 가장 마지막에
-            return new PayResponse(PayResult.SUCCESS,discountedAmount);
-        }
     public PayCancelResponse payCancel(PayCancelRequest payCancelRequest) {
         PaymentInterface paymentInterface = paymentInterfaceMap.get(payCancelRequest.getPayMethodType());
 
